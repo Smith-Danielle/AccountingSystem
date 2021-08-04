@@ -10,6 +10,10 @@
     <None Remove="Microsoft.Extensions.Configuration.Json" />
     <None Remove="MySql.Data" />
     <None Remove="EmployeeModel\" />
+    <None Remove="Accounts\" />
+    <None Remove="Invoices\" />
+    <None Remove="Checks\" />
+    <None Remove="Deposits\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\Debug\net5.0\appsettings.json" />
@@ -20,6 +24,10 @@
     <PackageReference Include="MySql.Data" Version="8.0.26" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="EmployeeDapper\" />
+    <Folder Include="Employees\" />
+    <Folder Include="Accounts\" />
+    <Folder Include="Invoices\" />
+    <Folder Include="Checks\" />
+    <Folder Include="Deposits\" />
   </ItemGroup>
 </Project>

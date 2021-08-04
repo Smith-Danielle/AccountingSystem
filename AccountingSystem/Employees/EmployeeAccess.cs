@@ -3,6 +3,7 @@ using System.Data;
 using System.IO;
 using MySql.Data.MySqlClient;
 using Microsoft.Extensions.Configuration;
+
 namespace AccountingSystem
 {
     public class EmployeeAccess
@@ -30,7 +31,7 @@ namespace AccountingSystem
             int access;
             do
             {
-                Console.WriteLine("To create and account please enter the access code provided by your Administrator or type Exit to go back.");
+                Console.WriteLine("To create and account, please enter the access code provided by your Administrator or type Exit to go back to the Login screen.");
                 response = Console.ReadLine();
                 Console.Clear();
 
@@ -62,8 +63,23 @@ namespace AccountingSystem
                 var last = Console.ReadLine();
                 Console.WriteLine("Whats your password?");
                 var password = Console.ReadLine();
-                Repo1.InsertEmployee(first, last, password);
-                Console.WriteLine("Your account has been created.");
+                Console.Clear();
+
+                var empInfo = Repo1.GetEmployee(first, last);
+                string passwordCheck = string.Empty;
+                foreach (var item in empInfo)
+                {
+                    passwordCheck = item.Password;
+                }
+                if (String.IsNullOrEmpty(passwordCheck))
+                {
+                    Repo1.InsertEmployee(first, last, password);
+                    Console.WriteLine("Your account has been created.");
+                }
+                else
+                {
+                    Console.WriteLine("You already have an account.");
+                }
             } 
         }
 
@@ -75,6 +91,7 @@ namespace AccountingSystem
             var last = Console.ReadLine();
             Console.WriteLine("Please enter your password.");
             var passwordEntered = Console.ReadLine();
+            Console.Clear();
             var empInfo = Repo1.GetEmployee(first, last);
             string password = string.Empty;
             int empID = 0;
