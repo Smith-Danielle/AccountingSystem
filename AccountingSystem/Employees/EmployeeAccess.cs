@@ -23,7 +23,7 @@ namespace AccountingSystem
 
         public DapperEmployeeRepository Repo1 { get; set; }
 
-        public int EmpID { get; set; }
+        public int EmpID { get; set; } = 0;
 
         public void CreateAccount()
         {

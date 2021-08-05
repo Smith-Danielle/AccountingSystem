@@ -22,5 +22,9 @@ namespace AccountingSystem
         public void UpdateAccount(int invoiceEntryID, int account);
         //Delete an Invoice Entry
         public void DeleteInvoice(int invoiceEntryID);
+        //For Check Run, need to update invoice status
+        public void UpdateSingleInvoiceStatus(string status, int invoiceEntryID);
+        public void UpdateInvoiceStatus(string status, string startDate, string endDate);
+        
     }
 }

@@ -57,7 +57,7 @@ namespace AccountingSystem
 
         public IEnumerable<Invoices> GetOpenInvoice(int invoiceEntryID)
         {
-            return _connection.Query<Invoices>("SELECT i.*, a.AccountName, CONCAT(E.FirstName, ' ', E.Lastname) AS EmployeeName FROM Invoices as i INNER JOIN Accounts AS a ON i.AccountID_Debit = a.AccountID INNER JOIN Employees AS e ON i.EmployeeID = e.EmployeeID WHERE Status = 'OPEN' AND InvoiceEntryID = @invoiceEntryID;",
+            return _connection.Query<Invoices>("SELECT c.*, a.AccountName, CONCAT(E.FirstName, ' ', E.Lastname) AS EmployeeName FROM Invoices as i INNER JOIN Accounts AS a ON i.AccountID_Debit = a.AccountID INNER JOIN Employees AS e ON i.EmployeeID = e.EmployeeID WHERE Status = 'OPEN' AND InvoiceEntryID = @invoiceEntryID;",
                 new { invoiceEntryID = invoiceEntryID });
         }
 
@@ -145,5 +145,18 @@ namespace AccountingSystem
             Console.Clear();
             Console.WriteLine($"Invoice Entry ID {invoiceEntryID} has been deleted");
         }
+
+        public void UpdateSingleInvoiceStatus(string status, int invoiceEntryID)
+        {
+            _connection.Execute("UPDATE Invoices SET Status = @status WHERE InvoiceEntryID = @invoiceEntryID;",
+                new { status = status, invoiceEntryID = invoiceEntryID });
+        }
+
+        public void UpdateInvoiceStatus(string status, string startDate, string endDate)
+        {
+            _connection.Execute("UPDATE Invoices SET Status = @status WHERE DueDate BETWEEN @startDate AND @endDate;",
+                new { status = status, startDate = startDate, endDate = endDate });
+        }
+        
     }
 }
