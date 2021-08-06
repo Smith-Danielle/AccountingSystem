@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 
@@ -250,7 +251,7 @@ namespace AccountingSystem
                             Console.WriteLine("To print a batch of checks, you will need the invoice due date range you would like to print through.");
                             Console.WriteLine("_____________________________________________________________________________________________________");
                             Console.WriteLine("Please select a number below:");
-                            Console.WriteLine("_____________________________");
+                            Console.WriteLine("_____________________________________________");
                             Console.WriteLine("1: See open invoice list, ordered by due date");
                             Console.WriteLine("2: Enter Invoice Due Date Range");
                             bool invID = int.TryParse(Console.ReadLine(), out response);
@@ -260,130 +261,131 @@ namespace AccountingSystem
                         DateTime invDate1 = DateTime.MinValue;
                         DateTime invDate2 = DateTime.MinValue;
 
-                        if (response == 1)
-                        {
-                            bool isDate;
+                            if (response == 1)
+                            {
+                                bool isDate;
+                                do
+                                {
+                                    var openSort = RepoInvoices.GetAllOpenInvoicesSortedDueDate();
+                                    Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
+                                    Console.WriteLine(String.Format("{0,-6} | {1, -13} | {2, -17} | {3, -15} | {4, -13} | {5, -13} | {6, -24} | {7, -10} | {8, -22} | {9, -19} | {10, -13}", "Status", "Inv. Entry ID", "Transaction Type", "Invoice Number", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Entered By", "Entry Date"));
+                                    Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
+                                    foreach (var item in openSort)
+                                    {
+                                        Console.WriteLine(String.Format("{0,-6} | {1, -13} | {2, -17} | {3, -15} | {4, -13} | {5, -13} | {6, -24} | {7, -10} | {8, -22} | {9, -19} | {10, -13}", item.Status, item.InvoiceEntryID, item.TransactionType, item.InvoiceNumber, Convert.ToDateTime(item.InvoiceDate).ToString("yyyy-MM-dd"), Convert.ToDateTime(item.DueDate).ToString("yyyy-MM-dd"), item.VendorName, item.Amount, item.AccountName, item.EmployeeName, Convert.ToDateTime(item.EntryDate).ToString("yyyy-MM-dd")));
+                                    }
+                                    Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
+                                    Console.WriteLine("Enter the date range you would like to print through");
+                                    Console.WriteLine("Please use format MM - DD - YYYY or YYYY - MM - DD");
+                                    Console.WriteLine("____________________________________________________");
+                                    Console.Write("Enter the first date here: ");
+                                    isDate = DateTime.TryParse(Console.ReadLine(), out invDate1);
+                                } while (isDate == false);
+
+                                bool isDate2;
+                                do
+                                {
+                                    Console.Write("Enter the last date here: ");
+                                    isDate2 = DateTime.TryParse(Console.ReadLine(), out invDate2);
+                                    Console.Clear();
+                                } while (isDate2 == false);
+
+                            }
+
+                            if (response == 2)
+                            {
+                                bool isDate;
+                                do
+                                {
+                                    Console.WriteLine("____________________________________________________");
+                                    Console.WriteLine("Enter the date range you would like to print through");
+                                    Console.WriteLine("Please use format MM - DD - YYYY or YYYY - MM - DD");
+                                    Console.WriteLine("____________________________________________________");
+                                    Console.Write("Enter the first date here: ");
+                                    isDate = DateTime.TryParse(Console.ReadLine(), out invDate1);
+                                } while (isDate == false);
+
+                                bool isDate2;
+                                do
+                                {
+                                    Console.Write("Enter the last date here: ");
+                                    isDate2 = DateTime.TryParse(Console.ReadLine(), out invDate2);
+                                    Console.Clear();
+                                } while (isDate2 == false);
+                            }
+
+                            string startDate = invDate1.ToString("yyyy-MM-dd");
+                            string endDate = invDate2.ToString("yyyy-MM-dd");
+
+
+                            int finalPrint = 0;
                             do
                             {
-                                var openSort = RepoInvoices.GetAllOpenInvoicesSortedDueDate();
+                                Console.WriteLine("______________________________________________________________________________________________________________________________");
+                                Console.WriteLine("Are you sure you want to print the following invoices?");
+                                Console.WriteLine("Please note, to remove or add checks, go back and update the invoice due date to fall in or out of the desired due date range.");
+                                var openSorted = RepoInvoices.GetOpenDateRange(startDate, endDate);
                                 Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
                                 Console.WriteLine(String.Format("{0,-6} | {1, -13} | {2, -17} | {3, -15} | {4, -13} | {5, -13} | {6, -24} | {7, -10} | {8, -22} | {9, -19} | {10, -13}", "Status", "Inv. Entry ID", "Transaction Type", "Invoice Number", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Entered By", "Entry Date"));
                                 Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
-                                foreach (var item in openSort)
+                                foreach (var item in openSorted)
                                 {
                                     Console.WriteLine(String.Format("{0,-6} | {1, -13} | {2, -17} | {3, -15} | {4, -13} | {5, -13} | {6, -24} | {7, -10} | {8, -22} | {9, -19} | {10, -13}", item.Status, item.InvoiceEntryID, item.TransactionType, item.InvoiceNumber, Convert.ToDateTime(item.InvoiceDate).ToString("yyyy-MM-dd"), Convert.ToDateTime(item.DueDate).ToString("yyyy-MM-dd"), item.VendorName, item.Amount, item.AccountName, item.EmployeeName, Convert.ToDateTime(item.EntryDate).ToString("yyyy-MM-dd")));
                                 }
                                 Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
-                                Console.WriteLine("Enter the date range you would like to print through");
-                                Console.WriteLine("Please use format MM - DD - YYYY or YYYY - MM - DD");
-                                Console.WriteLine("____________________________________________________");
-                                Console.Write("Enter the first date here: ");
-                                isDate = DateTime.TryParse(Console.ReadLine(), out invDate1);
-                            } while (isDate == false);
-
-                            bool isDate2;
-                            do
-                            {
-                                Console.Write("Enter the first date here: ");
-                                isDate2 = DateTime.TryParse(Console.ReadLine(), out invDate2);
+                                Console.WriteLine("Please select a number below:");
+                                Console.WriteLine("__________________________________");
+                                Console.WriteLine("1: Yes");
+                                Console.WriteLine("2: Re-enter Invoice Due Date Range");
+                                Console.WriteLine("3: Exit back to Checks Menu");
+                                bool decidePrint = int.TryParse(Console.ReadLine(), out finalPrint);
                                 Console.Clear();
-                            } while (isDate2 == false);
-
-                        }
-
-                        if (response == 2)
-                        {
-                            bool isDate;
-                            do
-                            {
-                                Console.WriteLine("____________________________________________________");
-                                Console.WriteLine("Enter the date range you would like to print through");
-                                Console.WriteLine("Please use format MM - DD - YYYY or YYYY - MM - DD");
-                                Console.WriteLine("____________________________________________________");
-                                Console.Write("Enter the first date here: ");
-                                isDate = DateTime.TryParse(Console.ReadLine(), out invDate1);
-                            } while (isDate == false);
-
-                            bool isDate2;
-                            do
-                            {
-                                Console.Write("Enter the first date here: ");
-                                isDate2 = DateTime.TryParse(Console.ReadLine(), out invDate2);
-                                Console.Clear();
-                            } while (isDate2 == false);
-                        }
-
-                        string startDate = invDate1.ToString("yyyy-MM-dd");
-                        string endDate = invDate2.ToString("yyyy-MM-dd");
-
-
-                        int finalPrint = 0;
-                        do
-                        {
-                            Console.WriteLine("______________________________________________________________________________________________________________________________");
-                            Console.WriteLine("Are you sure you want to print the following invoices?");
-                            Console.WriteLine("Please note, to remove or add checks, go back and update the invoice due date to fall in or out of the desired due date range.");
-                            var openSorted = RepoInvoices.GetOpenDateRange(startDate, endDate);
-                            Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
-                            Console.WriteLine(String.Format("{0,-6} | {1, -13} | {2, -17} | {3, -15} | {4, -13} | {5, -13} | {6, -24} | {7, -10} | {8, -22} | {9, -19} | {10, -13}", "Status", "Inv. Entry ID", "Transaction Type", "Invoice Number", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Entered By", "Entry Date"));
-                            Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
-                            foreach (var item in openSorted)
-                            {
-                                Console.WriteLine(String.Format("{0,-6} | {1, -13} | {2, -17} | {3, -15} | {4, -13} | {5, -13} | {6, -24} | {7, -10} | {8, -22} | {9, -19} | {10, -13}", item.Status, item.InvoiceEntryID, item.TransactionType, item.InvoiceNumber, Convert.ToDateTime(item.InvoiceDate).ToString("yyyy-MM-dd"), Convert.ToDateTime(item.DueDate).ToString("yyyy-MM-dd"), item.VendorName, item.Amount, item.AccountName, item.EmployeeName, Convert.ToDateTime(item.EntryDate).ToString("yyyy-MM-dd")));
-                            }
-                            Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
-                            Console.WriteLine("Please select a number below:");
-                            Console.WriteLine("_____________________________");
-                            Console.WriteLine("1: Yes");
-                            Console.WriteLine("2: Re-enter Invoice Due Date Range");
-                            Console.WriteLine("3: Exit back to Checks Menu");
-                            bool decidePrint = int.TryParse(Console.ReadLine(), out finalPrint);
-                            Console.Clear();
-                            if (finalPrint == 1)
-                            {
-                                //Insert Check Run (Multiple)
-                                
-                                RepoChecks.InsertChecks(startDate, endDate);
-
-                                //Null Emp IDs from Checks table to get newly inserted checks
-                                var nullEmp = RepoChecks.GetNullEmpIDChecks();
-                                List<int> ckIDs = new List<int>();
-                                foreach(var item in nullEmp)
+                                if (finalPrint == 1)
                                 {
-                                    ckIDs.Add(item.CheckID);
-                                }
+                                    //Insert Check Run (Multiple)
 
-                                //Iterate through list of Nulls to update Checks empID and check date
-                                foreach (var item in ckIDs)
+                                    RepoChecks.InsertChecks(startDate, endDate);
+
+                                    //Null Emp IDs from Checks table to get newly inserted checks
+                                    var nullEmp = RepoChecks.GetNullEmpIDChecks();
+                                    List<int> ckIDs = new List<int>();
+                                    foreach (var item in nullEmp)
+                                    {
+                                        ckIDs.Add(item.CheckID);
+                                    }
+
+                                    //Iterate through list of Nulls to update Checks empID and check date
+                                    foreach (var item in ckIDs)
+                                    {
+                                        RepoChecks.UpdateChecks(employeeID, DateTime.Now.ToString("yyyy-MM-dd"), item);
+                                    }
+
+                                    //Change Invoice Table Status to PAID
+                                    RepoInvoices.UpdateInvoiceStatus("PAID", startDate, endDate);
+
+                                    //Show Check Run. Requires Iteration through ckIDs above but will get the check id nums (first and last) and insert here.
+                                    Console.WriteLine($"Check entries for Invoices Due between {startDate} and {endDate}");
+                                    var checksComplete = RepoChecks.GetCheckRun(ckIDs[0], ckIDs[ckIDs.Count - 1]);
+                                    Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________");
+                                    Console.WriteLine(String.Format("{0,-13} | {1, -7} | {2, -13} | {3, -13} | {4, -17} | {5, -13} | {6, -13} | {7, -13} | {8, -20} | {9, -8} | {10, -20} | {11, -18}", "Trans. Type", "Check #", "Check Date", "Inv. Entry ID", "Inv. Trans. Type", "Invoice #", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Printed By"));
+                                    Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________");
+                                    foreach (var item in checksComplete)
+                                    {
+                                        Console.WriteLine(String.Format("{0,-13} | {1, -7} | {2, -13} | {3, -13} | {4, -17} | {5, -13} | {6, -13} | {7, -13} | {8, -20} | {9, -8} | {10, -20} | {11, -18}", item.TransactionType, item.CheckID, Convert.ToDateTime(item.CheckDate).ToString("yyyy-MM-dd"), item.InvoiceEntryID, item.InvoiceTransactionType, item.InvoiceNumber, Convert.ToDateTime(item.InvoiceDate).ToString("yyyy-MM-dd"), Convert.ToDateTime(item.DueDate).ToString("yyyy-MM-dd"), item.VendorName, item.Amount, item.AccountName, item.EmployeeName));
+                                    }
+                                    Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________");
+                                }
+                                if (finalPrint == 2)
                                 {
-                                    RepoChecks.UpdateChecks(employeeID, DateTime.Now.ToString("yyyy-MM-dd"), item);
+                                    redoSection2 = true;
                                 }
-
-                                //Change Invoice Table Status to PAID
-                                RepoInvoices.UpdateInvoiceStatus("PAID", startDate, endDate);
-
-                                //Show Check Run. Requires Iteration through ckIDs above but will get the check id nums (first and last) and insert here.
-                                Console.WriteLine($"Check entries for Invoices Due between {startDate} and {endDate}");
-                                var checksComplete = RepoChecks.GetCheckRun(ckIDs[0], ckIDs[ckIDs.Count -1]);
-                                Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________");
-                                Console.WriteLine(String.Format("{0,-13} | {1, -7} | {2, -13} | {3, -13} | {4, -17} | {5, -13} | {6, -13} | {7, -13} | {8, -20} | {9, -8} | {10, -20} | {11, -18}", "Trans. Type", "Check #", "Check Date", "Inv. Entry ID", "Inv. Trans. Type", "Invoice #", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Printed By"));
-                                Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________");
-                                foreach (var item in checksComplete)
+                                if (finalPrint == 3)
                                 {
-                                    Console.WriteLine(String.Format("{0,-13} | {1, -7} | {2, -13} | {3, -13} | {4, -17} | {5, -13} | {6, -13} | {7, -13} | {8, -20} | {9, -8} | {10, -20} | {11, -18}", item.TransactionType, item.CheckID, Convert.ToDateTime(item.CheckDate).ToString("yyyy-MM-dd"), item.InvoiceEntryID, item.InvoiceTransactionType, item.InvoiceNumber, Convert.ToDateTime(item.InvoiceDate).ToString("yyyy-MM-dd"), Convert.ToDateTime(item.DueDate).ToString("yyyy-MM-dd"), item.VendorName, item.Amount, item.AccountName, item.EmployeeName));
+                                    redoSection2 = false;
+                                    redo = false;
                                 }
-                                Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________");
-                            }
-                            if (finalPrint == 2)
-                            {
-                                redoSection2 = true;
-                            }
-                            if (finalPrint == 3)
-                            {
-                                redoSection2 = false;
-                                redo = false;
-                            }
-                        } while (finalPrint != 1 && finalPrint != 2 && finalPrint != 3);
+                            } while (finalPrint != 1 && finalPrint != 2 && finalPrint != 3);
+                        
                     }
                 } while (redoSection2 == true);
 
@@ -392,7 +394,7 @@ namespace AccountingSystem
                     int end = 0;
                     do
                     {
-                        Console.WriteLine("____________________________________");
+                        
                         Console.WriteLine("Would you like to print more checks?");
                         Console.WriteLine("____________________________________");
                         Console.WriteLine("Please select a number below:");

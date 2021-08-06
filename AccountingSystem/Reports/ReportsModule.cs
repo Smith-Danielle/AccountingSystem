@@ -85,7 +85,7 @@ namespace AccountingSystem
                 Console.WriteLine("_______________________________________________");
                 foreach (var item in accRep)
                 {
-                    Console.WriteLine(String.Format("{0,-17} | {1, -13} | {2, -10}", item.TransactionType, item.Debit_Credit, item.Amount));
+                    Console.WriteLine(String.Format("{0,-17} | {1, -13} | {2, -10}", item.TransactionType, item.Debit_Credit, Math.Round(item.Amount, 2)));
                 }
                 Console.WriteLine("_______________________________________________");
                 Console.WriteLine("");
@@ -97,7 +97,7 @@ namespace AccountingSystem
                 Console.WriteLine("__________________________");
                 foreach (var item in accCon)
                 {
-                    Console.WriteLine(String.Format("{0,-13} | {1, -10}", item.Debit_Credit, item.Amount));
+                    Console.WriteLine(String.Format("{0,-13} | {1, -10}", item.Debit_Credit, Math.Round(item.Amount)));
                 }
                 Console.WriteLine("__________________________");
 
@@ -179,7 +179,7 @@ namespace AccountingSystem
             Console.WriteLine("____________________________");
             foreach (var item in net)
             {
-                Console.WriteLine(String.Format("{0,-15} | {1, -10}", item.Revenue_Expense, item.Amount));
+                Console.WriteLine(String.Format("{0,-15} | {1, -10}", item.Revenue_Expense, Math.Round(item.Amount, 2)));
             }
             Console.WriteLine("____________________________");
 
@@ -211,7 +211,7 @@ namespace AccountingSystem
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("_____________________");
-            Console.WriteLine($"{type}: {netNum}");
+            Console.WriteLine($"{type}: {Math.Round(netNum, 2)}");
             Console.WriteLine("_____________________");
 
             Console.WriteLine("");
