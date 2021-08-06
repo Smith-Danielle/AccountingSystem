@@ -122,12 +122,12 @@ namespace AccountingSystem
                 if (accountID == 100 || accountID == 400 || accountID == 401 || accountID == 402 || accountID == 403)
                 {
                     balance = (debits - credits);
-                    accountType = $"Note: {accountID} is a Debit Balance Account.";
+                    accountType = $"Note: {accountName} ({accountID}) is a Debit Balance Account.";
                 }
                 if (accountID == 200 || accountID == 300)
                 {
                     balance = (credits - debits);
-                    accountType = $"Note: {accountID} is a Credit Balance Account.";
+                    accountType = $"Note: {accountName} ({accountID}) is a Credit Balance Account.";
                 }
 
                 Console.WriteLine("");
@@ -141,13 +141,16 @@ namespace AccountingSystem
                 Console.WriteLine("");
                 Console.WriteLine(accountType);
                 Console.WriteLine("Press Enter to close report");
+                
 
                 int end = 0;
                 do
                 {
-                    Console.WriteLine("_________________________________________");
+                    Console.ReadLine();
+                    Console.Clear();
+                    Console.WriteLine("________________________________________________");
                     Console.WriteLine("Would you like to review another account report?");
-                    Console.WriteLine("_________________________________________");
+                    Console.WriteLine("________________________________________________");
                     Console.WriteLine("Please select a number below:");
                     Console.WriteLine("_____________________________");
                     Console.WriteLine("1: Yes");
@@ -210,7 +213,13 @@ namespace AccountingSystem
             Console.WriteLine("_____________________");
             Console.WriteLine($"{type}: {netNum}");
             Console.WriteLine("_____________________");
+
+            Console.WriteLine("");
+            Console.WriteLine("");
             Console.WriteLine("To Exit back to the Reports Menu, press Enter.");
+
+            Console.ReadLine();
+            Console.Clear();
         }
     }
 }

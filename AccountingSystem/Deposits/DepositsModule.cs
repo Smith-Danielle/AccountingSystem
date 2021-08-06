@@ -77,13 +77,13 @@ namespace AccountingSystem
                     do
                     {
                         Console.WriteLine("_________________________________________");
-                        Console.WriteLine("Would you like to delete another invoice?");
+                        Console.WriteLine("Would you like to enter another deposit?");
                         Console.WriteLine("_________________________________________");
                         Console.WriteLine("Please select a number below:");
                         Console.WriteLine("_____________________________");
                         Console.WriteLine("1: Yes");
                         Console.WriteLine("2: Exit back to Deposits Menu");
-                        bool anotherDelete = int.TryParse(Console.ReadLine(), out end);
+                        bool anotherDeposit = int.TryParse(Console.ReadLine(), out end);
                         Console.Clear();
                         if (end == 1)
                         {
@@ -114,6 +114,9 @@ namespace AccountingSystem
             }
             Console.WriteLine("_______________________________________________________________________________________");
             Console.WriteLine("To Exit back to the Deposits Menu, press Enter.");
+
+            Console.ReadLine();
+            Console.Clear();
         }
     }
 }

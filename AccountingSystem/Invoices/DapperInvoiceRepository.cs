@@ -57,7 +57,7 @@ namespace AccountingSystem
 
         public IEnumerable<Invoices> GetOpenInvoice(int invoiceEntryID)
         {
-            return _connection.Query<Invoices>("SELECT c.*, a.AccountName, CONCAT(E.FirstName, ' ', E.Lastname) AS EmployeeName FROM Invoices as i INNER JOIN Accounts AS a ON i.AccountID_Debit = a.AccountID INNER JOIN Employees AS e ON i.EmployeeID = e.EmployeeID WHERE Status = 'OPEN' AND InvoiceEntryID = @invoiceEntryID;",
+            return _connection.Query<Invoices>("SELECT i.*, a.AccountName, CONCAT(E.FirstName, ' ', E.Lastname) AS EmployeeName FROM Invoices as i INNER JOIN Accounts AS a ON i.AccountID_Debit = a.AccountID INNER JOIN Employees AS e ON i.EmployeeID = e.EmployeeID WHERE InvoiceEntryID = @invoiceEntryID;",
                 new { invoiceEntryID = invoiceEntryID });
         }
 

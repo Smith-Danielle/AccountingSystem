@@ -214,14 +214,14 @@ namespace AccountingSystem
                                 //Show Check Printed
                                 Console.WriteLine($"Check entry for Invoice Entry ID {invoiceEntryID}");
                                 var single = RepoChecks.GetSingleCheck(invoiceEntryID);
-                                Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________________________________");
-                                Console.WriteLine(String.Format("{0,-17} | {1, -13} | {2, -13} | {3, -13} | {4, -17} | {5, -15} | {6, -13} | {7, -13} | {8, -24} | {9, -10} | {10, -22} | {11, -19}", "Transaction Type", "Check Number", "Check Date", "Inv. Entry ID", "Inv. Trans. Type", "Invoice Number", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Printed By"));
-                                Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________________________________");
+                                Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________");
+                                Console.WriteLine(String.Format("{0,-13} | {1, -7} | {2, -13} | {3, -13} | {4, -17} | {5, -13} | {6, -13} | {7, -13} | {8, -20} | {9, -8} | {10, -20} | {11, -18}", "Trans. Type", "Check #", "Check Date", "Inv. Entry ID", "Inv. Trans. Type", "Invoice #", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Printed By"));
+                                Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________");
                                 foreach (var item in single)
                                 {
-                                    Console.WriteLine(String.Format("{0,-17} | {1, -13} | {2, -13} | {3, -13} | {4, -17} | {5, -15} | {6, -13} | {7, -13} | {8, -24} | {9, -10} | {10, -22} | {11, -19}", item.TransactionType, item.CheckID, Convert.ToDateTime(item.CheckDate).ToString("yyyy-MM-dd"), item.InvoiceEntryID, item.InvoiceTransactionType, item.InvoiceNumber, Convert.ToDateTime(item.InvoiceDate).ToString("yyyy-MM-dd"), Convert.ToDateTime(item.DueDate).ToString("yyyy-MM-dd"), item.VendorName, item.Amount, item.AccountName, item.EmployeeName));
+                                    Console.WriteLine(String.Format("{0,-13} | {1, -7} | {2, -13} | {3, -13} | {4, -17} | {5, -13} | {6, -13} | {7, -13} | {8, -20} | {9, -8} | {10, -20} | {11, -18}", item.TransactionType, item.CheckID, Convert.ToDateTime(item.CheckDate).ToString("yyyy-MM-dd"), item.InvoiceEntryID, item.InvoiceTransactionType, item.InvoiceNumber, Convert.ToDateTime(item.InvoiceDate).ToString("yyyy-MM-dd"), Convert.ToDateTime(item.DueDate).ToString("yyyy-MM-dd"), item.VendorName, item.Amount, item.AccountName, item.EmployeeName));
                                 }
-                                Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________________________________");
+                                Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________");
                             }
                             if (finalPrint == 2)
                             {
@@ -365,14 +365,14 @@ namespace AccountingSystem
                                 //Show Check Run. Requires Iteration through ckIDs above but will get the check id nums (first and last) and insert here.
                                 Console.WriteLine($"Check entries for Invoices Due between {startDate} and {endDate}");
                                 var checksComplete = RepoChecks.GetCheckRun(ckIDs[0], ckIDs[ckIDs.Count -1]);
-                                Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________________________________");
-                                Console.WriteLine(String.Format("{0,-17} | {1, -13} | {2, -13} | {3, -13} | {4, -17} | {5, -15} | {6, -13} | {7, -13} | {8, -24} | {9, -10} | {10, -22} | {11, -19}", "Transaction Type", "Check Number", "Check Date", "Inv. Entry ID", "Inv. Trans. Type", "Invoice Number", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Printed By"));
-                                Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________________________________");
+                                Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________");
+                                Console.WriteLine(String.Format("{0,-13} | {1, -7} | {2, -13} | {3, -13} | {4, -17} | {5, -13} | {6, -13} | {7, -13} | {8, -20} | {9, -8} | {10, -20} | {11, -18}", "Trans. Type", "Check #", "Check Date", "Inv. Entry ID", "Inv. Trans. Type", "Invoice #", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Printed By"));
+                                Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________");
                                 foreach (var item in checksComplete)
                                 {
-                                    Console.WriteLine(String.Format("{0,-17} | {1, -13} | {2, -13} | {3, -13} | {4, -17} | {5, -15} | {6, -13} | {7, -13} | {8, -24} | {9, -10} | {10, -22} | {11, -19}", item.TransactionType, item.CheckID, Convert.ToDateTime(item.CheckDate).ToString("yyyy-MM-dd"), item.InvoiceEntryID, item.InvoiceTransactionType, item.InvoiceNumber, Convert.ToDateTime(item.InvoiceDate).ToString("yyyy-MM-dd"), Convert.ToDateTime(item.DueDate).ToString("yyyy-MM-dd"), item.VendorName, item.Amount, item.AccountName, item.EmployeeName));
+                                    Console.WriteLine(String.Format("{0,-13} | {1, -7} | {2, -13} | {3, -13} | {4, -17} | {5, -13} | {6, -13} | {7, -13} | {8, -20} | {9, -8} | {10, -20} | {11, -18}", item.TransactionType, item.CheckID, Convert.ToDateTime(item.CheckDate).ToString("yyyy-MM-dd"), item.InvoiceEntryID, item.InvoiceTransactionType, item.InvoiceNumber, Convert.ToDateTime(item.InvoiceDate).ToString("yyyy-MM-dd"), Convert.ToDateTime(item.DueDate).ToString("yyyy-MM-dd"), item.VendorName, item.Amount, item.AccountName, item.EmployeeName));
                                 }
-                                Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________________________________");
+                                Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________");
                             }
                             if (finalPrint == 2)
                             {
@@ -418,17 +418,22 @@ namespace AccountingSystem
 
         public void ViewPrintedChecks()
         {
+            
             Console.WriteLine("All Printed Checks:");
             var allCks = RepoChecks.GetAllChecks();
-            Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________________________________");
-            Console.WriteLine(String.Format("{0,-17} | {1, -13} | {2, -13} | {3, -13} | {4, -17} | {5, -15} | {6, -13} | {7, -13} | {8, -24} | {9, -10} | {10, -22} | {11, -19}", "Transaction Type", "Check Number", "Check Date", "Inv. Entry ID", "Inv. Trans. Type", "Invoice Number", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Printed By"));
-            Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________________________________");
+            Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________");
+            Console.WriteLine(String.Format("{0,-13} | {1, -7} | {2, -13} | {3, -13} | {4, -17} | {5, -13} | {6, -13} | {7, -13} | {8, -20} | {9, -8} | {10, -20} | {11, -18}", "Trans. Type", "Check #", "Check Date", "Inv. Entry ID", "Inv. Trans. Type", "Invoice #", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Printed By"));
+            Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________");
             foreach (var item in allCks)
             {
-                Console.WriteLine(String.Format("{0,-17} | {1, -13} | {2, -13} | {3, -13} | {4, -17} | {5, -15} | {6, -13} | {7, -13} | {8, -24} | {9, -10} | {10, -22} | {11, -19}", item.TransactionType, item.CheckID, Convert.ToDateTime(item.CheckDate).ToString("yyyy-MM-dd"), item.InvoiceEntryID, item.InvoiceTransactionType, item.InvoiceNumber, Convert.ToDateTime(item.InvoiceDate).ToString("yyyy-MM-dd"), Convert.ToDateTime(item.DueDate).ToString("yyyy-MM-dd"), item.VendorName, item.Amount, item.AccountName, item.EmployeeName));
+                Console.WriteLine(String.Format("{0,-13} | {1, -7} | {2, -13} | {3, -13} | {4, -17} | {5, -13} | {6, -13} | {7, -13} | {8, -20} | {9, -8} | {10, -20} | {11, -18}", item.TransactionType, item.CheckID, Convert.ToDateTime(item.CheckDate).ToString("yyyy-MM-dd"), item.InvoiceEntryID, item.InvoiceTransactionType, item.InvoiceNumber, Convert.ToDateTime(item.InvoiceDate).ToString("yyyy-MM-dd"), Convert.ToDateTime(item.DueDate).ToString("yyyy-MM-dd"), item.VendorName, item.Amount, item.AccountName, item.EmployeeName));
             }
-            Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________________________________");
+            Console.WriteLine("______________________________________________________________________________________________________________________________________________________________________________________________________");
             Console.WriteLine("To Exit back to the Checks Menu, press Enter.");
+
+            Console.ReadLine();
+            Console.Clear();
+            
         }
     }
 }

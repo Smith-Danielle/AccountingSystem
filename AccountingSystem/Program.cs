@@ -14,7 +14,7 @@ namespace AccountingSystem
             //Please note, if accounts are added, update ReportsModule to reflect the newly added accounts
 
 
-            /*EmployeeAccess empAccess = new EmployeeAccess();
+            EmployeeAccess empAccess = new EmployeeAccess();
             int login;
             bool run = true;
             do
@@ -155,8 +155,8 @@ namespace AccountingSystem
                             Console.WriteLine("____________________________");
                             Console.WriteLine("Please select a number below");
                             Console.WriteLine("____________________________");
-                            Console.WriteLine("1: Write Checks");
-                            Console.WriteLine("2: View Printed Checks");
+                            Console.WriteLine("1: Enter Deposits");
+                            Console.WriteLine("2: View All Deposits");
                             Console.WriteLine("3: Exit back to Main Menu");
                             bool depMenu = int.TryParse(Console.ReadLine(), out depositAction);
                             Console.Clear();
@@ -186,9 +186,9 @@ namespace AccountingSystem
                             ReportsModule rep = new ReportsModule();
                             Console.WriteLine("_______");
                             Console.WriteLine("Reports");
-                            Console.WriteLine("____________________________");
+                            Console.WriteLine("___________________________________");
                             Console.WriteLine("Please select a number below");
-                            Console.WriteLine("____________________________");
+                            Console.WriteLine("___________________________________");
                             Console.WriteLine("1: View Account Activity & Balances");
                             Console.WriteLine("2: Check Net Income/Loss");
                             Console.WriteLine("3: Exit back to Main Menu");
@@ -216,133 +216,7 @@ namespace AccountingSystem
                     }
                 } while (empAccess.EmpID != 0 && runMain == true);
             }
-            Console.WriteLine("Thanks for using AccountingSystems 2021");*/
-
-            var config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
-            .Build();
-
-            string connString = config.GetConnectionString("DefaultConnection");
-            IDbConnection conn = new MySqlConnection(connString);
-
-            DapperReportsRepository rep = new DapperReportsRepository(conn);
-
-
-
-            //Ask for account
-            //list with id #
-            //give opportunity to run a report for different account
-            var accountname = 200;
-            //be sure to format Account: Rent (400) 
-            var accRep = rep.GetAccountActivity(accountname);
-            Console.WriteLine($"Account: Cash ({accountname}) Detailed Transactions");
-            Console.WriteLine("__________________________________________________________");
-            Console.WriteLine(String.Format("{0,-17} | {1, -13} | {2, -10}", "Transaction Type", "Debit/Credit", "Amount"));
-            Console.WriteLine("_______________________________________________");
-            foreach (var item in accRep)
-            {
-                Console.WriteLine(String.Format("{0,-17} | {1, -13} | {2, -10}", item.TransactionType, item.Debit_Credit, item.Amount));
-            }
-            Console.WriteLine("_______________________________________________");
-            Console.WriteLine("");
-            Console.WriteLine("");
-            var accCon = rep.GetCondensedActivity(accountname);
-            Console.WriteLine($"Account: Cash ({accountname}) Condensed Balances");
-            Console.WriteLine("_______________________________________________________");
-            Console.WriteLine(String.Format("{0,-13} | {1, -10}", "Debit/Credit", "Amount"));
-            Console.WriteLine("__________________________");
-            foreach (var item in accCon)
-            {
-                Console.WriteLine(String.Format("{0,-13} | {1, -10}", item.Debit_Credit, item.Amount));
-            }
-            Console.WriteLine("__________________________");
-
-            double debits = 0;
-            double credits = 0;
-            var accTotal = rep.GetCondensedActivity(accountname);
-            foreach (var item in accTotal)
-            {
-                if (item.Debit_Credit == "Debit")
-                {
-                    debits = item.Amount;
-                }
-                if (item.Debit_Credit == "Credit")
-                {
-                    credits = item.Amount;
-                }
-            }
-
-            double balance = 0;
-            string accountType = string.Empty;
-
-            if (accountname == 100 || accountname == 400 || accountname == 401 || accountname == 402 || accountname == 403)
-            {
-                balance = (debits - credits);
-                accountType = $"Note: {accountname} is a Debit Balance Account.";
-            }
-            if (accountname == 200 || accountname == 300)
-            {
-                balance = (credits - debits);
-                accountType = $"Note: {accountname} is a Credit Balance Account.";
-            }
-
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine($"Account: Cash ({accountname}) Total Balance");
-            Console.WriteLine("__________________________________________________");
-            Console.WriteLine($"{Math.Round(balance, 2)}");
-            Console.WriteLine("___________");
-
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine(accountType);
-
-
-            //Net Income/Loss
-            /*Console.WriteLine("Net Income/Loss Report");
-            var net = rep.GetNetBalance();
-            Console.WriteLine("____________________________");
-            Console.WriteLine(String.Format("{0,-15} | {1, -10}", "Revenue/Expense", "Amount"));
-            Console.WriteLine("____________________________");
-            foreach (var item in net)
-            {
-                Console.WriteLine(String.Format("{0,-15} | {1, -10}", item.Revenue_Expense, item.Amount));
-            }
-            Console.WriteLine("____________________________");
-
-            double revenue = 0;
-            double expense = 0;
-            string type = string.Empty;
-            double netNum = 0;
-            var netBal = rep.GetNetBalance();
-            foreach (var item in netBal)
-            {
-                if (item.Revenue_Expense == "Revenue")
-                {
-                    revenue = item.Amount;
-                }
-                if (item.Revenue_Expense == "Expense")
-                {
-                    expense = item.Amount;
-                }
-            }
-            netNum = Math.Abs(revenue - expense);
-            if (revenue >= expense)
-            {
-                type = "Net Income";
-            }
-            else
-            {
-                type = "Net Loss";
-            }
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("_____________________");
-            Console.WriteLine($"{type}: {netNum}");
-            Console.WriteLine("_____________________");*/
-
-
+            Console.WriteLine("Thanks for using AccountingSystems 2021");
 
         }
     }
