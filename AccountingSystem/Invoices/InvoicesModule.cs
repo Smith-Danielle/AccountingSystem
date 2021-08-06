@@ -32,20 +32,23 @@ namespace AccountingSystem
                 int choice;
                 do
                 {
+                    Console.WriteLine("_____________________________");
                     Console.WriteLine("Invoice or Credit Memo");
+                    Console.WriteLine("_____________________________");
                     Console.WriteLine("Please select a number below:");
+                    Console.WriteLine("_____________________________");
                     Console.WriteLine("1: Invoice");
-                    Console.WriteLine("2: Credit");
+                    Console.WriteLine("2: Credit Memo");
                     bool question = int.TryParse(Console.ReadLine(), out choice);
                     Console.Clear();
                 } while (choice != 1 && choice != 2);
                 if (choice == 1)
                 {
-                    transactionType = "Invoice";
+                    transactionType = "INVOICE";
                 }
                 else if (choice == 2)
                 {
-                    transactionType = "Credit";
+                    transactionType = "CREDIT MEMO";
                 }
 
                 Console.WriteLine("Enter: Invoice Number");
@@ -90,7 +93,9 @@ namespace AccountingSystem
                 int accountIdDebit;
                 do
                 {
+                    Console.WriteLine("_____________________________");
                     Console.WriteLine("Enter: Account Number");
+                    Console.WriteLine("_____________________________");
                     Console.WriteLine("400: Rent");
                     Console.WriteLine("401: Utilites");
                     Console.WriteLine("402: Repair & Maintenance");
@@ -103,8 +108,11 @@ namespace AccountingSystem
 
                 do
                 {
+                    Console.WriteLine("________________________________________");
                     Console.WriteLine("Would you like to enter another invoice?");
+                    Console.WriteLine("________________________________________");
                     Console.WriteLine("Please select a number below:");
+                    Console.WriteLine("________________________________________");
                     Console.WriteLine("1: Enter additional invoice");
                     Console.WriteLine("2: Exit back to Invoices Menu");
                     bool action = int.TryParse(Console.ReadLine(), out nextAction);
@@ -121,8 +129,11 @@ namespace AccountingSystem
                 int order;
                 do
                 {
+                    Console.WriteLine("__________________________________________________________________________");
                     Console.WriteLine("Would you like to view open invoies sorted by Invoice Entry ID or Due Date");
+                    Console.WriteLine("__________________________________________________________________________");
                     Console.WriteLine("Please select a number below:");
+                    Console.WriteLine("_____________________________");
                     Console.WriteLine("1: Order by Invoice Entry ID");
                     Console.WriteLine("2: Order by Due Date");
                     bool orderType = int.TryParse(Console.ReadLine(), out order);
@@ -132,6 +143,7 @@ namespace AccountingSystem
                 if (order == 1)
                 {
                     var openInvoices = RepoInvoice.GetAllOpenInvoices();
+                    Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
                     Console.WriteLine(String.Format("{0,-6} | {1, -13} | {2, -17} | {3, -15} | {4, -13} | {5, -13} | {6, -24} | {7, -10} | {8, -22} | {9, -19} | {10, -13}", "Status", "Inv. Entry ID", "Transaction Type", "Invoice Number", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Entered By", "Entry Date"));
                     Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
                     foreach (var item in openInvoices)
@@ -145,6 +157,7 @@ namespace AccountingSystem
                 if (order == 2)
                 {
                     var openInvoices1 = RepoInvoice.GetAllOpenInvoicesSortedDueDate();
+                    Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
                     Console.WriteLine(String.Format("{0,-6} | {1, -13} | {2, -17} | {3, -15} | {4, -13} | {5, -13} | {6, -24} | {7, -10} | {8, -22} | {9, -19} | {10, -13}", "Status", "Inv. Entry ID", "Transaction Type", "Invoice Number", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Entered By", "Entry Date"));
                     Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
                     foreach (var item in openInvoices1)
@@ -157,8 +170,11 @@ namespace AccountingSystem
 
                 do
                 {
+                    Console.WriteLine("_______________________________________________________");
                     Console.WriteLine("Would you like view open invoices in a different order?");
+                    Console.WriteLine("_______________________________________________________");
                     Console.WriteLine("Please select a number below:");
+                    Console.WriteLine("_____________________________");
                     Console.WriteLine("1: View open invoice in a different order");
                     Console.WriteLine("2: Exit back to Invoices Menu");
                     bool action = int.TryParse(Console.ReadLine(), out nextAction);
@@ -177,8 +193,11 @@ namespace AccountingSystem
                 bool update;
                 do
                 {
+                    Console.WriteLine("_________________________________________________________");
                     Console.WriteLine("To update an invoice, you will need the Invoice Entry ID.");
+                    Console.WriteLine("_________________________________________________________");
                     Console.WriteLine("Please select a number below:");
+                    Console.WriteLine("_____________________________");
                     Console.WriteLine("1: See open invoice list");
                     Console.WriteLine("2: Enter Invoice Entry ID");
                     update = int.TryParse(Console.ReadLine(), out response);
@@ -209,6 +228,7 @@ namespace AccountingSystem
                         do
                         {
                             var open = RepoInvoice.GetAllOpenInvoices();
+                            Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
                             Console.WriteLine(String.Format("{0,-6} | {1, -13} | {2, -17} | {3, -15} | {4, -13} | {5, -13} | {6, -24} | {7, -10} | {8, -22} | {9, -19} | {10, -13}", "Status", "Inv. Entry ID", "Transaction Type", "Invoice Number", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Entered By", "Entry Date"));
                             Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
                             foreach (var item in open)
@@ -240,6 +260,7 @@ namespace AccountingSystem
                         do
                         {
                             var openSort = RepoInvoice.GetAllOpenInvoicesSortedDueDate();
+                            Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
                             Console.WriteLine(String.Format("{0,-6} | {1, -13} | {2, -17} | {3, -15} | {4, -13} | {5, -13} | {6, -24} | {7, -10} | {8, -22} | {9, -19} | {10, -13}", "Status", "Inv. Entry ID", "Transaction Type", "Invoice Number", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Entered By", "Entry Date"));
                             Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
                             foreach (var item in openSort)
@@ -296,8 +317,11 @@ namespace AccountingSystem
                     int updateType;
                 do
                 {
+                    Console.WriteLine("______________________________");
                     Console.WriteLine("What would you like to update?");
+                    Console.WriteLine("______________________________");
                     Console.WriteLine("Please select a number below:");
+                    Console.WriteLine("______________________________");
                     Console.WriteLine("1: Transaction Type");
                     Console.WriteLine("2: Invoice Number");
                     Console.WriteLine("3: Invoice Date");
@@ -314,21 +338,24 @@ namespace AccountingSystem
                         int choice;
                         do
                         {
+                            Console.WriteLine("__________________________________________________________");
                             Console.WriteLine("Enter the updated Transation Type. Invoice or Credit Memo.");
+                            Console.WriteLine("__________________________________________________________");
                             Console.WriteLine("Please select a number below:");
+                            Console.WriteLine("_____________________________");
                             Console.WriteLine("1: Invoice");
-                            Console.WriteLine("2: Credit");
+                            Console.WriteLine("2: Credit Memo");
                             bool question = int.TryParse(Console.ReadLine(), out choice);
                             Console.Clear();
                         } while (choice != 1 && choice != 2);
 
                         if (choice == 1)
                         {
-                            RepoInvoice.UpdateInvoiceTransactionType(invoiceEntryID, "Invoice");
+                            RepoInvoice.UpdateInvoiceTransactionType(invoiceEntryID, "INVOICE");
                         }
                         else if (choice == 2)
                         {
-                            RepoInvoice.UpdateInvoiceTransactionType(invoiceEntryID, "Credit");
+                            RepoInvoice.UpdateInvoiceTransactionType(invoiceEntryID, "CREDIT MEMO");
                         }
                     }
 
@@ -398,7 +425,9 @@ namespace AccountingSystem
                         int account;
                         do
                         {
+                            Console.WriteLine("________________________________");
                             Console.WriteLine("Enter the updated Account Number");
+                            Console.WriteLine("________________________________");
                             Console.WriteLine("400: Rent");
                             Console.WriteLine("401: Utilites");
                             Console.WriteLine("402: Repair & Maintenance");
@@ -410,8 +439,11 @@ namespace AccountingSystem
                     }
                     do
                     {
+                        Console.WriteLine("________________________________________________________________________________");
                         Console.WriteLine($"Would you like to update additional info for Invoice Entry ID: {invoiceEntryID}");
+                        Console.WriteLine("________________________________________________________________________________");
                         Console.WriteLine("Please select a number below");
+                        Console.WriteLine("____________________________");
                         Console.WriteLine($"1: Update additional info for Invoice Entry ID: {invoiceEntryID}");
                         Console.WriteLine("2: Update a new Invoice Entry ID");
                         Console.WriteLine("3: Exit back to Invoices Menu");
@@ -450,8 +482,11 @@ namespace AccountingSystem
                     int response;
                     do
                     {
+                        Console.WriteLine("_________________________________________________________");
                         Console.WriteLine("To delete an invoice, you will need the Invoice Entry ID.");
+                        Console.WriteLine("_________________________________________________________");
                         Console.WriteLine("Please select a number below:");
+                        Console.WriteLine("_____________________________");
                         Console.WriteLine("1: See open invoice list");
                         Console.WriteLine("2: Enter Invoice Entry ID");
                         bool deleteOption = int.TryParse(Console.ReadLine(), out response);
@@ -466,8 +501,11 @@ namespace AccountingSystem
                         bool order;
                         do
                         {
+                            Console.WriteLine("____________________________________________________________________");
                             Console.WriteLine("Would you like to see a list sorted by Invoice Entry ID or Due Date?");
+                            Console.WriteLine("____________________________________________________________________");
                             Console.WriteLine("Please select a number below:");
+                            Console.WriteLine("_____________________________");
                             Console.WriteLine("1: Sorted by Invoice Entry ID");
                             Console.WriteLine("2: Sorted by Due Date");
                             order = int.TryParse(Console.ReadLine(), out response1);
@@ -481,6 +519,7 @@ namespace AccountingSystem
                             do
                             {
                                 var open = RepoInvoice.GetAllOpenInvoices();
+                                Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
                                 Console.WriteLine(String.Format("{0,-6} | {1, -13} | {2, -17} | {3, -15} | {4, -13} | {5, -13} | {6, -24} | {7, -10} | {8, -22} | {9, -19} | {10, -13}", "Status", "Inv. Entry ID", "Transaction Type", "Invoice Number", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Entered By", "Entry Date"));
                                 Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
                                 foreach (var item in open)
@@ -513,6 +552,7 @@ namespace AccountingSystem
                             do
                             {
                                 var openSort = RepoInvoice.GetAllOpenInvoicesSortedDueDate();
+                                Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
                                 Console.WriteLine(String.Format("{0,-6} | {1, -13} | {2, -17} | {3, -15} | {4, -13} | {5, -13} | {6, -24} | {7, -10} | {8, -22} | {9, -19} | {10, -13}", "Status", "Inv. Entry ID", "Transaction Type", "Invoice Number", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Entered By", "Entry Date"));
                                 Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
                                 foreach (var item in openSort)
@@ -567,6 +607,7 @@ namespace AccountingSystem
                     {
                         Console.WriteLine("Are you sure you want to delete the following invoice?");
                         var delete = RepoInvoice.GetOpenInvoice(invoiceEntryID);
+                        Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
                         Console.WriteLine(String.Format("{0,-6} | {1, -13} | {2, -17} | {3, -15} | {4, -13} | {5, -13} | {6, -24} | {7, -10} | {8, -22} | {9, -19} | {10, -13}", "Status", "Inv. Entry ID", "Transaction Type", "Invoice Number", "Invoice Date", "Due Date", "Vendor Name", "Amount", "Account", "Entered By", "Entry Date"));
                         Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
                         foreach (var item in delete)
@@ -575,6 +616,7 @@ namespace AccountingSystem
                         }
                         Console.WriteLine("__________________________________________________________________________________________________________________________________________________________________________________________________");
                         Console.WriteLine("Please select a number below:");
+                        Console.WriteLine("_____________________________");
                         Console.WriteLine("1: Yes");
                         Console.WriteLine("2: Re-enter Invoice Entry ID");
                         Console.WriteLine("3: Exit back to Invoices Menu");
@@ -601,8 +643,11 @@ namespace AccountingSystem
                     int end = 0;
                     do
                     {
+                        Console.WriteLine("_________________________________________");
                         Console.WriteLine("Would you like to delete another invoice?");
+                        Console.WriteLine("_________________________________________");
                         Console.WriteLine("Please select a number below:");
+                        Console.WriteLine("_____________________________");
                         Console.WriteLine("1: Yes");
                         Console.WriteLine("2: Exit back to Invoices Menu");
                         bool anotherDelete = int.TryParse(Console.ReadLine(), out end);

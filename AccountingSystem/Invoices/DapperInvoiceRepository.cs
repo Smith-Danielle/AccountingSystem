@@ -154,9 +154,15 @@ namespace AccountingSystem
 
         public void UpdateInvoiceStatus(string status, string startDate, string endDate)
         {
-            _connection.Execute("UPDATE Invoices SET Status = @status WHERE DueDate BETWEEN @startDate AND @endDate;",
+            _connection.Execute("UPDATE Invoices SET Status = @status WHERE Status = 'OPEN' AND DueDate BETWEEN @startDate AND @endDate;",
                 new { status = status, startDate = startDate, endDate = endDate });
         }
-        
+
+        public IEnumerable<Invoices> GetOpenDateRange(string startDate, string endDate)
+        {
+            return _connection.Query<Invoices>("SELECT i.*, a.AccountName, CONCAT(E.FirstName, ' ', E.Lastname) AS EmployeeName FROM Invoices as i INNER JOIN Accounts AS a ON i.AccountID_Debit = a.AccountID INNER JOIN Employees AS e ON i.EmployeeID = e.EmployeeID WHERE Status = 'OPEN' AND DueDate BETWEEN @startDate AND @endDate ORDER BY DueDate;",
+                new { startDate = startDate, endDate = endDate });
+        }
+
     }
 }

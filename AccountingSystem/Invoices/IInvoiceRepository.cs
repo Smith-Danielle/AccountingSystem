@@ -12,6 +12,7 @@ namespace AccountingSystem
         public IEnumerable<Invoices> GetAllOpenInvoices();
         public IEnumerable<Invoices> GetAllOpenInvoicesSortedDueDate();
         public IEnumerable<Invoices> GetOpenInvoice(int invoiceEntryID);
+        public IEnumerable<Invoices> GetOpenDateRange(string startDate, string endDate);
         //Update an Invoice Entry
         public void UpdateInvoiceTransactionType(int invoiceEntryID, string transactionType);
         public void UpdateInvoiceNumber(int invoiceEntryID, string invoiceNumber);

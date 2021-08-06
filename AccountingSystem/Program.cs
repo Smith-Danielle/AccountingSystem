@@ -11,13 +11,19 @@ namespace AccountingSystem
     {
         static void Main(string[] args)
         {
-            EmployeeAccess empAccess = new EmployeeAccess();
+            //Please note, if accounts are added, update ReportsModule to reflect the newly added accounts
+
+
+            /*EmployeeAccess empAccess = new EmployeeAccess();
             int login;
             bool run = true;
             do
             {
+                Console.WriteLine("_____________________________________");
                 Console.WriteLine("Welcome to AccountingSystems 2021");
+                Console.WriteLine("_____________________________________");
                 Console.WriteLine("Please select a number below to begin");
+                Console.WriteLine("_____________________________________");
                 Console.WriteLine("1: Create an Account");
                 Console.WriteLine("2: Login");
                 Console.WriteLine("3: Exit");
@@ -38,16 +44,18 @@ namespace AccountingSystem
                 }
                 
             } while (empAccess.EmpID == 0 && run == true);
-            /*
-            // Main Menu access still needs to have empAccess.EmpID value for entry methods (insert intos)
+            
             if (run == true)
             {
                 int module;
                 bool runMain = true;
                 do
                 {
+                    Console.WriteLine("_________");
                     Console.WriteLine("Main Menu");
+                    Console.WriteLine("_________________________________________________");
                     Console.WriteLine("Please select a number below to access the Module");
+                    Console.WriteLine("_________________________________________________");
                     Console.WriteLine("1: Invoices");
                     Console.WriteLine("2: Checks");
                     Console.WriteLine("3: Deposits");
@@ -62,9 +70,13 @@ namespace AccountingSystem
                         bool moveforward = true;
                         do
                         {
+                            moveforward = true;
                             InvoicesModule inv = new InvoicesModule();
+                            Console.WriteLine("________");
                             Console.WriteLine("Invoices");
+                            Console.WriteLine("____________________________");
                             Console.WriteLine("Please select a number below");
+                            Console.WriteLine("____________________________");
                             Console.WriteLine("1: Enter Invoices");
                             Console.WriteLine("2: View Open Invoices");
                             Console.WriteLine("3: Update an Invoice");
@@ -98,15 +110,105 @@ namespace AccountingSystem
 
                     if (module == 2)
                     {
+                        int checkAction;
+                        bool moveChecks = true;
+                        do
+                        {
+                            moveChecks = true;
+                            ChecksModule ck = new ChecksModule();
+                            Console.WriteLine("______");
+                            Console.WriteLine("Checks");
+                            Console.WriteLine("____________________________");
+                            Console.WriteLine("Please select a number below");
+                            Console.WriteLine("____________________________");
+                            Console.WriteLine("1: Write Checks");
+                            Console.WriteLine("2: View Printed Checks");
+                            Console.WriteLine("3: Exit back to Main Menu");
+                            bool invMenu = int.TryParse(Console.ReadLine(), out checkAction);
+                            Console.Clear();
 
+                            if (checkAction == 1)
+                            {
+                                ck.CheckRun(empAccess.EmpID);
+                            }
+                            else if (checkAction == 2)
+                            {
+                                ck.ViewPrintedChecks();
+                            }
+                            else if (checkAction == 3)
+                            {
+                                moveChecks = false;
+                            }
+
+                        } while (moveChecks == true);
                     }
                     if (module == 3)
                     {
+                        int depositAction;
+                        bool moveDeposits = true;
+                        do
+                        {
+                            moveDeposits = true;
+                            DepositsModule dep = new DepositsModule();
+                            Console.WriteLine("________");
+                            Console.WriteLine("Deposits");
+                            Console.WriteLine("____________________________");
+                            Console.WriteLine("Please select a number below");
+                            Console.WriteLine("____________________________");
+                            Console.WriteLine("1: Write Checks");
+                            Console.WriteLine("2: View Printed Checks");
+                            Console.WriteLine("3: Exit back to Main Menu");
+                            bool depMenu = int.TryParse(Console.ReadLine(), out depositAction);
+                            Console.Clear();
 
+                            if (depositAction == 1)
+                            {
+                                dep.EnterDeposit(empAccess.EmpID);
+                            }
+                            else if (depositAction == 2)
+                            {
+                                dep.ViewAllDeposits();
+                            }
+                            else if (depositAction == 3)
+                            {
+                                moveDeposits = false;
+                            }
+
+                        } while (moveDeposits == true);
                     }
                     if (module == 4)
                     {
+                        int reportAction;
+                        bool moveReports = true;
+                        do
+                        {
+                            moveReports = true;
+                            ReportsModule rep = new ReportsModule();
+                            Console.WriteLine("_______");
+                            Console.WriteLine("Reports");
+                            Console.WriteLine("____________________________");
+                            Console.WriteLine("Please select a number below");
+                            Console.WriteLine("____________________________");
+                            Console.WriteLine("1: View Account Activity & Balances");
+                            Console.WriteLine("2: Check Net Income/Loss");
+                            Console.WriteLine("3: Exit back to Main Menu");
+                            bool repMenu = int.TryParse(Console.ReadLine(), out reportAction);
+                            Console.Clear();
 
+                            if (reportAction == 1)
+                            {
+                                rep.AccountActivity();
+                            }
+                            else if (reportAction == 2)
+                            {
+                                rep.NetBalance();
+                            }
+                            else if (reportAction == 3)
+                            {
+                                moveReports = false;
+                            }
+
+                        } while (moveReports == true);
                     }
                     if (module == 5)
                     {
@@ -117,98 +219,131 @@ namespace AccountingSystem
             Console.WriteLine("Thanks for using AccountingSystems 2021");*/
 
             var config = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json")
-                    .Build();
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
 
             string connString = config.GetConnectionString("DefaultConnection");
             IDbConnection conn = new MySqlConnection(connString);
 
-            DapperInvoiceRepository inv = new DapperInvoiceRepository(conn);
-            DapperChecksRepository ck = new DapperChecksRepository(conn);
+            DapperReportsRepository rep = new DapperReportsRepository(conn);
 
 
 
-
-
-            //Single Check
-            // Similar to Update, make sure its open //Refer to update to check on how to check status
-            /*int invoiceEntryID = 2; //enter by user
-            var open = inv.GetOpenInvoice(invoiceEntryID);
-            double amount = 0;
-            foreach (var item in open)
+            //Ask for account
+            //list with id #
+            //give opportunity to run a report for different account
+            var accountname = 200;
+            //be sure to format Account: Rent (400) 
+            var accRep = rep.GetAccountActivity(accountname);
+            Console.WriteLine($"Account: Cash ({accountname}) Detailed Transactions");
+            Console.WriteLine("__________________________________________________________");
+            Console.WriteLine(String.Format("{0,-17} | {1, -13} | {2, -10}", "Transaction Type", "Debit/Credit", "Amount"));
+            Console.WriteLine("_______________________________________________");
+            foreach (var item in accRep)
             {
-                amount = item.Amount;
+                Console.WriteLine(String.Format("{0,-17} | {1, -13} | {2, -10}", item.TransactionType, item.Debit_Credit, item.Amount));
             }
-            //Check Method need to have a empid constructor like insert invoice when you create check module
-            ck.InsertSingleCheck(empAccess.EmpID, DateTime.Now.ToString("yyyy-MM-dd"), invoiceEntryID, amount);*/
-
-            //Change Single Invoice Status to Paid
-            //InvoiceID will be variable from user input
-            //inv.UpdateSingleInvoiceStatus("PAID", 3);
-
-            //Show Check Printed
-            /*int invoiceEntryID = 2; //enter by user
-            var single = ck.GetSingleCheck(invoiceEntryID);
-            foreach (var item in single)
+            Console.WriteLine("_______________________________________________");
+            Console.WriteLine("");
+            Console.WriteLine("");
+            var accCon = rep.GetCondensedActivity(accountname);
+            Console.WriteLine($"Account: Cash ({accountname}) Condensed Balances");
+            Console.WriteLine("_______________________________________________________");
+            Console.WriteLine(String.Format("{0,-13} | {1, -10}", "Debit/Credit", "Amount"));
+            Console.WriteLine("__________________________");
+            foreach (var item in accCon)
             {
-                Console.WriteLine($"{item.TransactionType}, {item.CheckID}, {Convert.ToDateTime(item.CheckDate).ToString("yyyy-MM-dd")}, {item.Amount}, {item.InvoiceEntryID}, {item.AccountName}, {item.EmployeeName}, {item.VendorName}, {Convert.ToDateTime(item.DueDate).ToString("yyyy-MM-dd")}, {item.InvoiceNumber}, {Convert.ToDateTime(item.InvoiceDate).ToString("yyyy-MM-dd")}, {item.InvoiceTransactionType}"); 
-            }*/
+                Console.WriteLine(String.Format("{0,-13} | {1, -10}", item.Debit_Credit, item.Amount));
+            }
+            Console.WriteLine("__________________________");
 
-
-
-            //Insert Check Run (Multiple)
-            //User will put in date range
-            /*string start = "2021-09-22";
-            string end = "2021-10-01";
-            ck.InsertChecks(start, end);*/
-
-            //null emp ids
-            /*var nullEmp = ck.GetNullEmpIDChecks();
-            List<int> ckIDs = new List<int>();
-            foreach(var item in nullEmp)
+            double debits = 0;
+            double credits = 0;
+            var accTotal = rep.GetCondensedActivity(accountname);
+            foreach (var item in accTotal)
             {
-                ckIDs.Add(item.CheckID);
-            }*/
+                if (item.Debit_Credit == "Debit")
+                {
+                    debits = item.Amount;
+                }
+                if (item.Debit_Credit == "Credit")
+                {
+                    credits = item.Amount;
+                }
+            }
 
+            double balance = 0;
+            string accountType = string.Empty;
 
-            //iterate through list to update
-            /*int empID = 6;
-            string date = "2021-08-05";
-            foreach (var item in ckIDs)
+            if (accountname == 100 || accountname == 400 || accountname == 401 || accountname == 402 || accountname == 403)
             {
-                ck.UpdateChecks(empID, date, item);
-            }*/
-
-            //Change Invoice Status to Paid
-            //Dates will be variables from user input
-            //inv.UpdateInvoiceStatus("PAID", "2021-09-01", "2021-09-06");
-
-
-            //Get check run. Requires iteration through null emp id list and get the check id nums (first and last) and insert here.
-            //See ckIDs above
-            /*var checksComplete = ck.GetCheckRun(1, 2);
-            foreach (var item in checksComplete)
+                balance = (debits - credits);
+                accountType = $"Note: {accountname} is a Debit Balance Account.";
+            }
+            if (accountname == 200 || accountname == 300)
             {
-                Console.WriteLine($"{item.TransactionType}, {item.CheckID}, {Convert.ToDateTime(item.CheckDate).ToString("yyyy-MM-dd")}, {item.Amount}, {item.InvoiceEntryID}, {item.AccountName}, {item.EmployeeName}, {item.VendorName}, {Convert.ToDateTime(item.DueDate).ToString("yyyy-MM-dd")}, {item.InvoiceNumber}, {Convert.ToDateTime(item.InvoiceDate).ToString("yyyy-MM-dd")}, {item.InvoiceTransactionType}");
-            }*/
+                balance = (credits - debits);
+                accountType = $"Note: {accountname} is a Credit Balance Account.";
+            }
 
-            //Get all checks
-            //Need to actually do a inner join to get all these tables
-            /*var allChecks = ck.GetAllChecks();
-            foreach (var item in allChecks)
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine($"Account: Cash ({accountname}) Total Balance");
+            Console.WriteLine("__________________________________________________");
+            Console.WriteLine($"{Math.Round(balance, 2)}");
+            Console.WriteLine("___________");
+
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine(accountType);
+
+
+            //Net Income/Loss
+            /*Console.WriteLine("Net Income/Loss Report");
+            var net = rep.GetNetBalance();
+            Console.WriteLine("____________________________");
+            Console.WriteLine(String.Format("{0,-15} | {1, -10}", "Revenue/Expense", "Amount"));
+            Console.WriteLine("____________________________");
+            foreach (var item in net)
             {
-                Console.WriteLine($"{item.TransactionType}, {item.CheckID}, {Convert.ToDateTime(item.CheckDate).ToString("yyyy-MM-dd")}, {item.Amount}, {item.InvoiceEntryID}, {item.AccountName}, {item.EmployeeName}, {item.VendorName}, {Convert.ToDateTime(item.DueDate).ToString("yyyy-MM-dd")}, {item.InvoiceNumber}, {Convert.ToDateTime(item.InvoiceDate).ToString("yyyy-MM-dd")}, {item.InvoiceTransactionType}");
+                Console.WriteLine(String.Format("{0,-15} | {1, -10}", item.Revenue_Expense, item.Amount));
+            }
+            Console.WriteLine("____________________________");
 
-            }*/
-
-
-
-
-
+            double revenue = 0;
+            double expense = 0;
+            string type = string.Empty;
+            double netNum = 0;
+            var netBal = rep.GetNetBalance();
+            foreach (var item in netBal)
+            {
+                if (item.Revenue_Expense == "Revenue")
+                {
+                    revenue = item.Amount;
+                }
+                if (item.Revenue_Expense == "Expense")
+                {
+                    expense = item.Amount;
+                }
+            }
+            netNum = Math.Abs(revenue - expense);
+            if (revenue >= expense)
+            {
+                type = "Net Income";
+            }
+            else
+            {
+                type = "Net Loss";
+            }
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("_____________________");
+            Console.WriteLine($"{type}: {netNum}");
+            Console.WriteLine("_____________________");*/
 
 
 
         }
-}
+    }
 }

@@ -34,7 +34,7 @@ namespace AccountingSystem
 
         public IEnumerable<Checks> GetNullEmpIDChecks()
         {
-            return _connection.Query<Checks>("SELECT * FROM Checks WHERE EmployeeID IS NULL;");
+            return _connection.Query<Checks>("SELECT * FROM Checks WHERE EmployeeID IS NULL ORDER BY CheckID;");
         }
 
         public void UpdateChecks(int employeeID, string checkDate, int checkID)
@@ -51,7 +51,9 @@ namespace AccountingSystem
 
         public IEnumerable<Checks> GetAllChecks()
         {
-            return _connection.Query<Checks>("SELECT * FROM Checks;");
+            return _connection.Query<Checks>("select c.transactiontype, c.checkID, c.checkdate, c.amount, c.invoiceentryid, a.accountname, concat(e.firstname, ' ', e.lastname) as employeename, i.vendorname, i.duedate, i.invoicenumber, i.invoicedate, i.transactiontype as InvoiceTransactionType from checks as c inner join invoices as i on c.invoiceentryid = i.invoiceentryid inner join employees as e on e.employeeid = c.employeeid inner join accounts as a on a.accountid = i.accountid_Debit;");
+
+
         }
 
     }
