@@ -140,6 +140,22 @@ namespace AccountingSystem
                     Console.Clear();
                 } while (order != 1 && order != 2);
 
+                //Mod starts here
+                /*var checkIfOpen = RepoInvoice.GetAllOpenInvoices();
+                List<string> status = new List<string>();
+                foreach (var item in checkIfOpen)
+                {
+                    status.Add(item.Status);
+                }
+                if (status.All("PAID") || status.Length == 0)
+                {
+                    Console.WriteLine("There are no open invoices. You are being redirected to the Invoices Menu.");
+                    nextAction = 2;
+                }*/
+                //At this point clear all invoices to paid. Add && nextAction != 2 to the next 3 loops in the method.
+                //Then test this out to see if the message pops and redirects to Invoices.
+
+
                 if (order == 1)
                 {
                     var openInvoices = RepoInvoice.GetAllOpenInvoices();
